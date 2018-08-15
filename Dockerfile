@@ -72,9 +72,7 @@ RUN set -xe; \
 		done; \
 		gpg --batch --verify php.tar.gz.asc php.tar.gz; \
 		rm -r "$GNUPGHOME"; \
-	fi; \
-	\
-	apk del .fetch-deps
+	fi;
 
 COPY docker-php-source /usr/local/bin/
 
@@ -121,9 +119,8 @@ RUN set -xe \
 			| xargs -r apk info --installed \
 			| sort -u \
 	)" \
-	&& apk add --no-cache --virtual .php-rundeps $runDeps \
-	\
-	&& apk del .build-deps
+	&& apk add --no-cache --virtual .php-rundeps $runDeps
+	
 
 COPY docker-php-ext-* /usr/local/bin/
 
@@ -193,5 +190,6 @@ RUN apk upgrade --update && apk add \
 && pecl install memcache \
 && pecl install redis \ 
 && docker-php-ext-enable memcache \
-&& docker-php-ext-enable redis
-
+&& docker-php-ext-enable redis \
+&& apk del .build-deps \
+&& apk del .fetch-deps 
