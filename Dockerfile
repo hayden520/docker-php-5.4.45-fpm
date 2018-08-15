@@ -181,5 +181,17 @@ RUN apk upgrade --update && apk add \
 && docker-php-ext-configure ldap --with-libdir=lib/ \
 && docker-php-ext-install ldap \
 && docker-php-ext-install -j$(nproc) iconv mcrypt \
-&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-&& docker-php-ext-install -j$(nproc) gd
+&& docker-php-ext-configure gd \
+--with-gd \
+--with-freetype-dir=/usr/include/ \
+--with-png-dir=/usr/include/ \
+--with-jpeg-dir=/usr/include/ \
+&& docker-php-ext-install -j$(nproc) gd \
+&& docker-php-ext-install mysql \
+&& docker-php-ext-install mysqli \
+&& docker-php-ext-install pdo_mysql \
+&& pecl install memcache \
+&& pecl install redis \ 
+&& docker-php-ext-enable memcache \
+&& docker-php-ext-enable redis
+
